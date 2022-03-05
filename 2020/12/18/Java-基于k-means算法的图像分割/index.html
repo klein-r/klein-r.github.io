@@ -1,0 +1,484 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="klein-r">
+  <meta name="keywords" content="">
+  
+    <meta property="og:type" content="article">
+<meta property="og:title" content="[Java]基于k-means算法的图像分割">
+<meta property="og:url" content="https://klein-r.github.io/2020/12/18/Java-%E5%9F%BA%E4%BA%8Ek-means%E7%AE%97%E6%B3%95%E7%9A%84%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/">
+<meta property="og:site_name" content="klein&#39;s blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-18T16:15:01.000Z">
+<meta property="article:modified_time" content="2022-03-05T04:11:41.158Z">
+<meta property="article:author" content="klein-r">
+<meta property="article:tag" content="图像分割">
+<meta property="article:tag" content="数据挖掘">
+<meta property="article:tag" content="k-means">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>[Java]基于k-means算法的图像分割 - klein&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"klein-r.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>klein&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="[Java]基于k-means算法的图像分割">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-19 00:15" pubdate>
+        2020年12月19日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">[Java]基于k-means算法的图像分割</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年3月5日 中午
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p><strong><span id="more"></span></strong></p>
+<p>文章的开头先介绍一下 k-means 算法：</p>
+<blockquote>
+<p>输入：</p>
+<p>​            k：簇的数目</p>
+<p>​            D：包含n个对象的数据集。</p>
+<p>输出：    k个簇的集合</p>
+<p>步骤：</p>
+<p>​    （1）从D中任意选择k个对象最为初始簇中心。</p>
+<p>​    （2）根据簇中对象的均值，将每个对象分配到最相似的簇。</p>
+<p>​    （3）更新簇均值，即重新计算每个簇中对象的均值。</p>
+<p>​    （4）重复步骤（2）和步骤（3）直到簇均值不再变化。        </p>
+</blockquote>
+<p>​        我这里使用的是基于聚类的图像分割，k-means算法是进行基于聚类的图像分割的经典算法，这个算法有在使用时有一些缺陷：</p>
+<p>​        （1）结果容易被初始簇中心的选择所影响，容易陷入局部最优。</p>
+<p>​        （2）聚类的效果非常依赖于k值的选择。k值过小，分割效果不明显。k值过大，图像的细节会过于明显。</p>
+<p>​        由于能力有限，我写的k-means算法的优化的方面主要有两个：</p>
+<p>​        （1）初始簇中心的选择，通过将图片像素灰度化（将RGB值按3:6:1计算得出），按照灰度值排序，然后将数据集k等分，取每个等分的平均值（灰度值）作为簇类中心的值（灰度值，R&#x3D;G&#x3D;B&#x3D;灰度值）。</p>
+<p>​        （2）使用拐点法和平均轮廓系数法，根据程序运行输出的误差平方和（SSE）和平均轮廓系数，绘制折线图，然后根据折线图确认k值。</p>
+<p>代码：</p>
+<ol>
+<li>dataItem.java</li>
+</ol>
+  <figure class="highlight java"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.bigData;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">dataItem</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> r;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> g;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> b;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> grayScale;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> group;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">sortDataItem</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Comparable</span>&lt;sortDataItem&gt; &#123;<br>    <span class="hljs-keyword">public</span> dataItem di;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> width;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> height;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">sortDataItem</span><span class="hljs-params">()</span> &#123;<br>        di = <span class="hljs-keyword">new</span> <span class="hljs-title class_">dataItem</span>();<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compareTo</span><span class="hljs-params">(sortDataItem s)</span> &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.di.grayScale != s.di.grayScale) <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.di.grayScale &lt; s.di.grayScale ? <span class="hljs-number">1</span> : -<span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>ImageCluster.java</li>
+</ol>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.bigData;<br><br><span class="hljs-keyword">import</span> java.awt.Color;<br><span class="hljs-keyword">import</span> java.awt.image.BufferedImage;<br><span class="hljs-keyword">import</span> java.io.File;<br><span class="hljs-keyword">import</span> java.io.IOException;<br><span class="hljs-keyword">import</span> java.util.Arrays;<br><span class="hljs-keyword">import</span> javax.imageio.ImageIO;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ImageCluster</span> &#123;<br>    <span class="hljs-comment">//主要功能就是读取一副图像，再对图像进行分割</span><br>    <span class="hljs-comment">//需要分类的簇数</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> k;<br>    <span class="hljs-comment">//迭代次数</span><br>    <span class="hljs-comment">//private int m;</span><br>    <span class="hljs-comment">//数据集合</span><br>    <span class="hljs-keyword">private</span> dataItem[][] source;<br>    <span class="hljs-comment">//簇类中心集合</span><br>    <span class="hljs-keyword">private</span> dataItem[] center;<br>    <span class="hljs-comment">//统计每个簇的像素点的总和，用于计算新的簇类中心</span><br>    <span class="hljs-keyword">private</span> dataItem[] centerSum;<br>    <span class="hljs-comment">// 图片的宽高</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> width;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> height;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;<br>        center = <span class="hljs-literal">null</span>;<br>        centerSum = <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-comment">//读取指定目录的图片数据，并且写入数组，这个数据要继续处理</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[][] getImageData(String path) &#123;<br>        <span class="hljs-type">BufferedImage</span> <span class="hljs-variable">bi</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">try</span> &#123;<br>            bi = ImageIO.read(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path));<br><br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>        width = bi.getWidth();<br>        height = bi.getHeight();<br>        <span class="hljs-type">int</span>[][] data = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[width][height];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; width; i++)<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; height; j++)<br>                data[i][j] = bi.getRGB(i, j);<br>        <span class="hljs-keyword">return</span> data;<br>    &#125;<br><br>    <span class="hljs-comment">//用来得到灰度值，使用加权平均法，rgb取3:6:1</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getGrayScale</span><span class="hljs-params">(<span class="hljs-type">int</span> r, <span class="hljs-type">int</span> g, <span class="hljs-type">int</span> b)</span> &#123;<br>        <span class="hljs-keyword">return</span> (r * <span class="hljs-number">3</span> + g * <span class="hljs-number">6</span> + b) / <span class="hljs-number">10</span>;<br>    &#125;<br><br>    <span class="hljs-comment">//用来处理获取的像素数据，将整型数组的值转化为RGB值，存储进dataItem类型的二维数组中，返回二维数组</span><br>    <span class="hljs-keyword">private</span> dataItem[][] InitData(<span class="hljs-type">int</span>[][] data) &#123;<br>        dataItem[][] dataitems = <span class="hljs-keyword">new</span> <span class="hljs-title class_">dataItem</span>[data.length][data[<span class="hljs-number">0</span>].length];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; data.length; i++) &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; data[<span class="hljs-number">0</span>].length; j++) &#123;<br>                <span class="hljs-type">dataItem</span> <span class="hljs-variable">di</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">dataItem</span>();<br>                <span class="hljs-type">Color</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>(data[i][j]);<br><br>                di.r = c.getRed();<br>                di.g = c.getGreen();<br>                di.b = c.getBlue();<br>                di.grayScale = getGrayScale(di.r, di.g, di.b);<br>                di.group = <span class="hljs-number">1</span>;<br>                dataitems[i][j] = di;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> dataitems;<br>    &#125;<br><br>    <span class="hljs-comment">//将排好序的数据k等分然后返回各个等分的平均数</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getAverage</span><span class="hljs-params">(sortDataItem[] s, <span class="hljs-type">int</span> t)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">begin</span> <span class="hljs-operator">=</span> s.length / k * t;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">end</span> <span class="hljs-operator">=</span> s.length / k * (t + <span class="hljs-number">1</span>);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> begin; i &lt; end; i++) &#123;<br>            sum += s[i].di.grayScale;<br>        &#125;<br>        <span class="hljs-keyword">return</span> sum / (s.length / k);<br>    &#125;<br><br>    <span class="hljs-comment">//生成初始中心,初始化中心通过将像素点按照灰度值排序，然后k等分，在等分后的各个部分中取像素的平均数作为每个聚类初始中心</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">initCenters</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> &#123;<br>        center = <span class="hljs-keyword">new</span> <span class="hljs-title class_">dataItem</span>[k];<br>        centerSum = <span class="hljs-keyword">new</span> <span class="hljs-title class_">dataItem</span>[k];<span class="hljs-comment">//用来统计每个聚类里面的RGB分别之和，方便计算均值</span><br>        <span class="hljs-comment">//初始化sortDI</span><br>        sortDataItem[] sortDI = <span class="hljs-keyword">new</span> <span class="hljs-title class_">sortDataItem</span>[width * height];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; sortDI.length; i++) &#123;<br>            sortDI[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">sortDataItem</span>();<br>        &#125;<br>        <span class="hljs-comment">//将数据存储进sortDI中</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; width; i++) &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; height; j++) &#123;<br>                sortDI[i * height + j].di = source[i][j];<br>                sortDI[i * height + j].width = i;<br>                sortDI[i * height + j].height = j;<br>            &#125;<br>        &#125;<br>        <span class="hljs-comment">//排序</span><br>        Arrays.sort(sortDI, sortDataItem::compareTo);<br><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) &#123;<br>            <span class="hljs-type">dataItem</span> <span class="hljs-variable">cent</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">dataItem</span>();<br>            <span class="hljs-type">dataItem</span> <span class="hljs-variable">cent2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">dataItem</span>();<br><br>            cent.group = i;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">gs</span> <span class="hljs-operator">=</span> getAverage(sortDI, i);<br>            cent.r = gs;<br>            cent.g = gs;<br>            cent.b = gs;<br>            cent.grayScale = gs;<br>            center[i] = cent;<br><br>            cent2.r = <span class="hljs-number">0</span>;<br>            cent2.g = <span class="hljs-number">0</span>;<br>            cent2.b = <span class="hljs-number">0</span>;<br>            cent2.grayScale = <span class="hljs-number">0</span>;<br>            cent2.group = <span class="hljs-number">0</span>;<br>            centerSum[i] = cent2;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">//计算两个像素之间的RGB的欧几里得距离</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> <span class="hljs-title function_">distance</span><span class="hljs-params">(dataItem first, dataItem second)</span> &#123;<br>        <span class="hljs-keyword">return</span> Math.sqrt((first.r - second.r) * (first.r - second.r) +<br>                (first.g - second.g) * (first.g - second.g) +<br>                (first.b - second.b) * (first.b - second.b));<br>    &#125;<br><br>    <span class="hljs-comment">//返回一个数组中最小的坐标</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDistance</span><span class="hljs-params">(<span class="hljs-type">double</span>[] distance)</span> &#123;<br>        <span class="hljs-type">double</span> <span class="hljs-variable">minDistance</span> <span class="hljs-operator">=</span> distance[<span class="hljs-number">0</span>];<br>        <span class="hljs-type">int</span> <span class="hljs-variable">minLocation</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; distance.length; i++) &#123;<br>            <span class="hljs-keyword">if</span> (distance[i] &lt; minDistance) &#123;<br>                minDistance = distance[i];<br>                minLocation = i;<br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (distance[i] == minDistance) &#123;<br>                <span class="hljs-keyword">if</span> ((Math.random() * <span class="hljs-number">10</span>) &lt; <span class="hljs-number">5</span>) &#123;<br>                    minLocation = i;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> minLocation;<br>    &#125;<br><br>    <span class="hljs-comment">// 每个点进行分类</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">clusterSet</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">group</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;<br>        <span class="hljs-type">double</span> distance[] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[k];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; width; i++) &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; height; j++) &#123;<br>                <span class="hljs-comment">//求出距离中心点最短的中心</span><br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">q</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; q &lt; k; q++) &#123;<br>                    distance[q] = distance(center[q], source[i][j]);<br>                &#125;<br>                group = minDistance(distance);<span class="hljs-comment">//寻找该点最近的中心</span><br>                source[i][j].group = group;<span class="hljs-comment">//把该点进行分类</span><br><br>                centerSum[group].r += source[i][j].r;<br>                centerSum[group].g += source[i][j].g;<br>                centerSum[group].b += source[i][j].b;<br>                <span class="hljs-comment">//centerSum[group].grayScale += source[i][j].grayScale;</span><br>                centerSum[group].group += <span class="hljs-number">1</span>;<span class="hljs-comment">//这个就是用来统计聚类里有几个点</span><br>                group = -<span class="hljs-number">1</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">//设置新的中心</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setNewCenter</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) &#123;<br>            <span class="hljs-comment">//取平均值为新的中心</span><br>            center[i].r = (<span class="hljs-type">int</span>) (centerSum[i].r / centerSum[i].group);<br>            center[i].g = (<span class="hljs-type">int</span>) (centerSum[i].g / centerSum[i].group);<br>            center[i].b = (<span class="hljs-type">int</span>) (centerSum[i].b / centerSum[i].group);<br>            center[i].grayScale = getGrayScale(center[i].r, center[i].g, center[i].b);<br>            center[i].group = i;<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-comment">//输出聚类好的数据</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">ImagedataOut</span><span class="hljs-params">(String path)</span> &#123;<br>        Color[] c = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>[k];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) &#123;<br>            c[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>((i + <span class="hljs-number">1</span>) * (<span class="hljs-number">255</span> / (k + <span class="hljs-number">1</span>)),<br>                    (i + <span class="hljs-number">1</span>) * (<span class="hljs-number">255</span> / (k + <span class="hljs-number">1</span>)),<br>                    (i + <span class="hljs-number">1</span>) * (<span class="hljs-number">255</span> / (k + <span class="hljs-number">1</span>)));<br>        &#125;<br><br>        <span class="hljs-type">BufferedImage</span> <span class="hljs-variable">nbi</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedImage</span>(width, height, BufferedImage.TYPE_INT_RGB);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; width; i++) &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; height; j++) &#123;<br>                nbi.setRGB(i, j, c[source[i][j].group].getRGB());<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">try</span> &#123;<br>            ImageIO.write(nbi, <span class="hljs-string">&quot;jpg&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path));<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">//进行kmeans计算的核心函数</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">kmeans</span><span class="hljs-params">(String inPath, <span class="hljs-type">int</span> maxK, <span class="hljs-type">int</span> maxM)</span> &#123;<br>        source = InitData(getImageData(inPath));<br>        <span class="hljs-type">String</span> <span class="hljs-variable">outPath</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;images\\out&quot;</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; t &lt;= maxK; t++) &#123;<br>            init();<br>            k = t;<br>            <span class="hljs-comment">//初始化聚类中心</span><br>            initCenters(k);<br>            <span class="hljs-comment">//进行最多maxM次聚类</span><br>            <span class="hljs-type">int</span> m;<br>            <span class="hljs-keyword">for</span> (m = <span class="hljs-number">0</span>; m &lt; maxM; m++) &#123;<br>                <span class="hljs-comment">// 将每个点进行分类</span><br>                clusterSet();<br>                <span class="hljs-comment">// 临时存储簇类中心的灰度值，用于后续判断灰度值是否改变</span><br>                <span class="hljs-type">int</span>[] oldCenter = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k];<br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) &#123;<br>                    oldCenter[i] = center[i].grayScale;<br>                &#125;<br>                <span class="hljs-comment">// 设置新的簇类中心</span><br>                setNewCenter();<br>                <span class="hljs-comment">// 判断旧的簇类中心和新的簇类中心是否相等，如果相等，说明再进行迭代就没有效果了</span><br>                <span class="hljs-type">boolean</span> <span class="hljs-variable">flag</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) &#123;<br>                    <span class="hljs-keyword">if</span> (oldCenter[i] != center[i].grayScale) &#123;<br>                        flag = <span class="hljs-literal">false</span>;<br>                        <span class="hljs-keyword">break</span>;<br>                    &#125;<br>                &#125;<br>                <span class="hljs-keyword">if</span> (flag == <span class="hljs-literal">true</span>) &#123;<br>                    <span class="hljs-keyword">break</span>;<br>                &#125;<br>                <span class="hljs-comment">//重置之前的求和结果</span><br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) &#123;<br>                    centerSum[i].r = <span class="hljs-number">0</span>;<br>                    centerSum[i].g = <span class="hljs-number">0</span>;<br>                    centerSum[i].b = <span class="hljs-number">0</span>;<br>                    centerSum[i].grayScale = <span class="hljs-number">0</span>;<br>                    centerSum[i].group = <span class="hljs-number">0</span>;<br>                &#125;<br>            &#125;<br>            <span class="hljs-comment">//当k值不同时输出不同的误差平方和，然后使用肘部法则判断取哪个k值</span><br>            <span class="hljs-type">double</span> <span class="hljs-variable">SSE</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>            SSE = computeSSE();<br>            <span class="hljs-comment">//计算平均轮廓系数</span><br>            <span class="hljs-type">double</span> <span class="hljs-variable">avgSC</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>            avgSC = computeAverageSilhouetteCoefficient();<br>            <span class="hljs-comment">//输出不同k值对应的迭代次数、误差平方和、平均轮廓系数</span><br>            System.out.println(<span class="hljs-string">&quot;k = &quot;</span> + k +<br>                    <span class="hljs-string">&quot;, 迭代总次数：&quot;</span> + m +<br>                    <span class="hljs-string">&quot;, 误差平方和（除以像素总数）：&quot;</span> + String.format(<span class="hljs-string">&quot;%.2f&quot;</span>, SSE / (width * height)) +<br>                    <span class="hljs-string">&quot;, 平均轮廓系数：&quot;</span> + String.format(<span class="hljs-string">&quot;%.2f&quot;</span>, avgSC)<br>            );<br>            <span class="hljs-comment">//当k值不同时，输出不同k值对应的图片</span><br>            ImagedataOut(outPath + k + <span class="hljs-string">&quot;.jpg&quot;</span>);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// 计算误差平方和（SSE）</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> <span class="hljs-title function_">computeSSE</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">double</span> <span class="hljs-variable">SSE</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; width; i++) &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; height; j++) &#123;<br>                <span class="hljs-type">double</span> <span class="hljs-variable">dis</span> <span class="hljs-operator">=</span> distance(source[i][j], center[source[i][j].group]);<br>                SSE += dis * dis;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> SSE;<br>    &#125;<br><br>    <span class="hljs-comment">// 计算轮廓系数</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> <span class="hljs-title function_">computeSilhouetteCoefficient</span><span class="hljs-params">(dataItem di, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> &#123;<br>        <span class="hljs-comment">//计算di这个点的ao值</span><br>        <span class="hljs-type">double</span> <span class="hljs-variable">ao</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-comment">//计算di这个点的bo值</span><br>        <span class="hljs-type">double</span> <span class="hljs-variable">bo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-type">double</span>[] dis = <span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[k];<br><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; width; i++) &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; height; j++) &#123;<br>                <span class="hljs-keyword">if</span> (i != x &amp;&amp; i != y) &#123;<br>                    <span class="hljs-keyword">if</span> (source[i][j].group == di.group) &#123;<br>                        ao += distance(di, source[i][j]);<br>                    &#125;<br>                    <span class="hljs-keyword">if</span> (source[i][j].group != di.group) &#123;<br>                        dis[source[i][j].group] += distance(di, source[i][j]);<br>                    &#125;<br>                &#125;<br>            &#125;<br>        &#125;<br>        ao /= centerSum[di.group].group - <span class="hljs-number">1</span>;<br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">        for (int i = 0; i &lt; width; i++) &#123;</span><br><span class="hljs-comment">            for (int j = 0; j &lt; height; j++) &#123;</span><br><span class="hljs-comment">                    if (source[i][j].group != di.group) &#123;</span><br><span class="hljs-comment">                        dis[source[i][j].group] += distance(di, source[i][j]);</span><br><span class="hljs-comment">                    &#125;</span><br><span class="hljs-comment">            &#125;</span><br><span class="hljs-comment">        &#125;</span><br><span class="hljs-comment">         */</span><br>        bo = Double.MAX_VALUE;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) &#123;<br>            <span class="hljs-keyword">if</span> (i != di.group) &#123;<br>                dis[i] /= centerSum[i].group;<br>                <span class="hljs-keyword">if</span> (bo &gt; dis[i]) &#123;<br>                    bo = dis[i];<br>                &#125;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> (bo - ao) / (Math.max(ao, bo));<br>    &#125;<br><br>    <span class="hljs-comment">//计算平均轮廓系数</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> <span class="hljs-title function_">computeAverageSilhouetteCoefficient</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">double</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; width; i++) &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; height; j++) &#123;<br>                sum += computeSilhouetteCoefficient(source[i][j], i, j);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> sum /= (width * height);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>Main.java</li>
+</ol>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.bigData;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br><br>        <span class="hljs-type">String</span> <span class="hljs-variable">inPath</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;images\\in.jpg&quot;</span>;<br>        <span class="hljs-type">ImageCluster</span> <span class="hljs-variable">ic</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ImageCluster</span>();<br>        ic.kmeans(inPath, <span class="hljs-number">16</span>,<span class="hljs-number">200</span>);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>参考链接：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhuzhuzhu22/article/details/53079114">【Java】K-means算法Java实现以及图像分割（续）</a></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java%E7%BC%96%E7%A8%8B/">Java编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/">图像分割</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/">数据挖掘</a>
+                    
+                      <a class="hover-with-bg" href="/tags/k-means/">k-means</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/03/05/LeetCode-Problem-15-%E9%A2%98%E8%A7%A3/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">LeetCode Problem#15 题解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/29/LeetCode-Problem-6-%E9%A2%98%E8%A7%A3/">
+                        <span class="hidden-mobile">LeetCode Problem#6 题解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

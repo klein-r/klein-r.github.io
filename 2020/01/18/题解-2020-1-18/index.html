@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="klein-r">
+  <meta name="keywords" content="">
+  
+    <meta property="og:type" content="article">
+<meta property="og:title" content="题解 2020&#x2F;1&#x2F;18">
+<meta property="og:url" content="https://klein-r.github.io/2020/01/18/%E9%A2%98%E8%A7%A3-2020-1-18/">
+<meta property="og:site_name" content="klein&#39;s blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-18T15:56:30.000Z">
+<meta property="article:modified_time" content="2022-03-05T04:11:41.158Z">
+<meta property="article:author" content="klein-r">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>题解 2020/1/18 - klein&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"klein-r.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>klein&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="题解 2020/1/18">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-01-18 23:56" pubdate>
+        2020年1月18日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">题解 2020/1/18</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年3月5日 中午
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p><strong><span id="more"></span></strong></p>
+<h5 id="1039-Course-List-for-Student-25point-s"><a href="#1039-Course-List-for-Student-25point-s" class="headerlink" title="1039 Course List for Student (25point(s))"></a>1039 Course List for Student (25point(s))</h5><p><a target="_blank" rel="noopener" href="https://pintia.cn/problem-sets/994805342720868352/problems/994805447855292416">传送门</a></p>
+<p>题意：输入报名某门课程（以数字为编号）的学生的名字（以三个字母加一个数字为编号），按名字字母序输出每个人名以及对应的报的课程数目及课程。</p>
+<p>思路：用<code>unordered_map&lt;string, vector&lt;int&gt; &gt;</code>来存储每个人名对应的课程（<code>unordered_map</code>的<code>key</code>不会进行排序，是通过<code>hash</code>来直接查找元素的，时间复杂度为O(1)，所以节省了时间，<code>map</code>用了红黑树，查找元素时的时间复杂度为O( log(n)））这题我用<code>map</code>时TLE了，而用<code>unordered_map</code>就过了。还有就是，这题如果用<code>scanf</code>和<code>printf</code>来代替<code>cin</code>和<code>cout</code>也可以节省时间，或者用<code>char*</code>代替<code>string</code>。有兴趣的可以把时间改的更少。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></div></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;string&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;unordered_map&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br>unordered_map&lt;string, vector&lt;<span class="hljs-type">int</span>&gt; &gt; student;<span class="hljs-comment">//记录学生姓名对应所选的课程</span><br>vector&lt;string&gt; name;<span class="hljs-comment">//记录学生姓名</span><br><span class="hljs-type">int</span> n, k;<span class="hljs-comment">//n为学生个数，k为课程总数</span><br>vector&lt;<span class="hljs-type">int</span>&gt; vt;<span class="hljs-comment">//用于临时存放某个学生所选的课程</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>    name.<span class="hljs-built_in">reserve</span>(<span class="hljs-number">40001</span>);<span class="hljs-comment">//这个函数的用法可以去搜一下，有的地方这个函数不可或缺</span><br>    vt.<span class="hljs-built_in">reserve</span>(<span class="hljs-number">2501</span>);<br>    cin &gt;&gt; n &gt;&gt; k;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) &#123;<br>        <span class="hljs-type">int</span> a, b;<br>        cin &gt;&gt; a &gt;&gt; b;<br>        string str;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= b; j++) &#123;<br>            cin &gt;&gt; str;<br>            student[str].<span class="hljs-built_in">push_back</span>(a);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) &#123;<br>        string na;<br>        cin &gt;&gt; na;<br>        name.<span class="hljs-built_in">push_back</span>(na);<br>    &#125;<br>    vector&lt;string&gt;::iterator it;<br>    <span class="hljs-keyword">for</span>(it = name.<span class="hljs-built_in">begin</span>(); it != name.<span class="hljs-built_in">end</span>(); it++) &#123;<br>        <span class="hljs-keyword">if</span>(student.<span class="hljs-built_in">find</span>(*it) == student.<span class="hljs-built_in">end</span>()) &#123;<span class="hljs-comment">//当没有找到对应的key时，返回unordered_map::end()，这和map是一样的</span><br>            cout &lt;&lt; *it &lt;&lt; <span class="hljs-string">&quot; 0&quot;</span> &lt;&lt; endl;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            vt = student[*it];<br>            <span class="hljs-built_in">sort</span>(vt.<span class="hljs-built_in">begin</span>(), vt.<span class="hljs-built_in">end</span>());<br>            cout &lt;&lt; *it &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; vt.<span class="hljs-built_in">size</span>();<br>            vector&lt;<span class="hljs-type">int</span>&gt;::iterator itt;<br>            <span class="hljs-keyword">for</span>(itt = vt.<span class="hljs-built_in">begin</span>(); itt != vt.<span class="hljs-built_in">end</span>(); itt++) &#123;<br>                cout &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; *itt;<br>            &#125;<br>            cout &lt;&lt; endl;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="1047-Student-List-for-Course"><a href="#1047-Student-List-for-Course" class="headerlink" title="1047 Student List for Course"></a><strong>1047</strong> <strong>Student List for Course</strong></h5><p><a target="_blank" rel="noopener" href="https://pintia.cn/problem-sets/994805342720868352/problems/994805433955368960">传送门</a></p>
+<p>题意：这题的输入输出和上面那题的输入输出正好相反，输入学生所选的课程，输出选择课程的人名。</p>
+<p>思路：正常地使用<code>vector</code>构建二维数组就可以了，这题一开始我用<code>cin</code>和<code>cout</code>还有<code>string</code>超时了，然后我改成<code>scanf</code>和<code>printf</code>还有<code>char*</code>之后就ac了。。。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cstdio&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br>vector&lt;vector&lt;<span class="hljs-type">char</span>*&gt; &gt; name;<br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(<span class="hljs-type">char</span>* a,<span class="hljs-type">char</span> *b)</span></span>&#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-built_in">strcmp</span>(a,b)&lt;<span class="hljs-number">0</span>;<span class="hljs-comment">//按照姓名的字母序排序，不能直接比较</span><br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> n, k;<br>    <span class="hljs-comment">//cin &gt;&gt; n &gt;&gt; k;</span><br>    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d&quot;</span>,&amp;n,&amp;k);<br>    name.<span class="hljs-built_in">resize</span>(k + <span class="hljs-number">1</span>);<span class="hljs-comment">//这个是构建二维数组时必须的东西，不然报错</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) &#123;<br>        name[i].<span class="hljs-built_in">reserve</span>(n);<br>    &#125;<br><br>    <span class="hljs-type">int</span> x;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) &#123;<br>        <span class="hljs-comment">//cin &gt;&gt; str &gt;&gt; x;</span><br>        <span class="hljs-type">char</span>* str=<span class="hljs-keyword">new</span> <span class="hljs-type">char</span>[<span class="hljs-number">5</span>];<br>        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%s %d&quot;</span>,str,&amp;x);<br>        <span class="hljs-type">int</span> y;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= x; j++) &#123;<br>            <span class="hljs-comment">//cin &gt;&gt; y;</span><br>            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;y);<br>            name[y].<span class="hljs-built_in">push_back</span>(str);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) &#123;<br>        <span class="hljs-built_in">sort</span>(name[i].<span class="hljs-built_in">begin</span>(), name[i].<span class="hljs-built_in">end</span>(),cmp);<br>        <span class="hljs-comment">//cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; name[i].size() &lt;&lt; endl;</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d %d\n&quot;</span>,i,name[i].<span class="hljs-built_in">size</span>());<br>        <span class="hljs-keyword">for</span>(vector&lt;<span class="hljs-type">char</span>*&gt;::iterator it = name[i].<span class="hljs-built_in">begin</span>(); it != name[i].<span class="hljs-built_in">end</span>(); it++) &#123;<br>            <span class="hljs-comment">//cout &lt;&lt; *it &lt;&lt; endl;</span><br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>,*it);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="1100-Mars-Numbers"><a href="#1100-Mars-Numbers" class="headerlink" title="1100 Mars Numbers"></a><strong>1100</strong> <strong>Mars Numbers</strong></h5><p><a target="_blank" rel="noopener" href="https://pintia.cn/problem-sets/994805342720868352/problems/994805367156883456">传送门</a></p>
+<p>题意：将10进制的数字转换为13进制，然后转换为“火星语”输出，或者输入“火星语”，转换为10进制的数字。</p>
+<p>思路：构建<code>map</code>时我没有用<code>string</code>，而是用<code>const char*</code>，所以比较麻烦。当<code>const char*</code>作为<code>key</code>时，<code>map</code>模板第三个参数必须要有，用来排序时的比较。否则会用地址来比较，然后不知道为什么无法使用<code>const char*</code>类型的变量（例如<code>const char* s;</code>）来进行访问，只能使用常量（例如<code>&quot;tret&quot;</code>），这个有兴趣的可以自己搜一下。还有就是13的结果不是<code>tam tret</code> 而是<code>tam</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cstdio&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;map&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">cmp</span> &#123;<span class="hljs-comment">//这是必须要有的，不然无法正常使用map</span><br>    <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *a, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *b)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">strcmp</span>(a, b) &lt; <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;;<br>map&lt;<span class="hljs-type">const</span> <span class="hljs-type">char</span>*, <span class="hljs-type">int</span>, cmp&gt; low;<span class="hljs-comment">//注意第三个参数</span><br>map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">const</span> <span class="hljs-type">char</span>*&gt; hlow, hhigh;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">charToInt</span><span class="hljs-params">(<span class="hljs-type">char</span> *s)</span><span class="hljs-comment">//将字符串转换为数字</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> len = <span class="hljs-built_in">strlen</span>(s), ans = <span class="hljs-number">0</span>, ii = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = len - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;<br>        ans += (s[i] - <span class="hljs-string">&#x27;0&#x27;</span>) * ii;<br>        ii *= <span class="hljs-number">10</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> ans;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>    low[<span class="hljs-string">&quot;tret&quot;</span>] = <span class="hljs-number">0</span>;<br>    low[<span class="hljs-string">&quot;jan&quot;</span>] = <span class="hljs-number">1</span>;<br>    low[<span class="hljs-string">&quot;tam&quot;</span>] = <span class="hljs-number">13</span>;<br>    low[<span class="hljs-string">&quot;feb&quot;</span>] = <span class="hljs-number">2</span>;<br>    low[<span class="hljs-string">&quot;hel&quot;</span>] = <span class="hljs-number">26</span>;<br>    low[<span class="hljs-string">&quot;mar&quot;</span>] = <span class="hljs-number">3</span>;<br>    low[<span class="hljs-string">&quot;maa&quot;</span>] = <span class="hljs-number">39</span>;<br>    low[<span class="hljs-string">&quot;apr&quot;</span>] = <span class="hljs-number">4</span>;<br>    low[<span class="hljs-string">&quot;huh&quot;</span>] = <span class="hljs-number">52</span>;<br>    low[<span class="hljs-string">&quot;may&quot;</span>] = <span class="hljs-number">5</span>;<br>    low[<span class="hljs-string">&quot;tou&quot;</span>] = <span class="hljs-number">65</span>;<br>    low[<span class="hljs-string">&quot;jun&quot;</span>] = <span class="hljs-number">6</span>;<br>    low[<span class="hljs-string">&quot;kes&quot;</span>] = <span class="hljs-number">78</span>;<br>    low[<span class="hljs-string">&quot;jly&quot;</span>] = <span class="hljs-number">7</span>;<br>    low[<span class="hljs-string">&quot;hei&quot;</span>] = <span class="hljs-number">91</span>;<br>    low[<span class="hljs-string">&quot;aug&quot;</span>] = <span class="hljs-number">8</span>;<br>    low[<span class="hljs-string">&quot;elo&quot;</span>] = <span class="hljs-number">104</span>;<br>    low[<span class="hljs-string">&quot;sep&quot;</span>] = <span class="hljs-number">9</span>;<br>    low[<span class="hljs-string">&quot;syy&quot;</span>] = <span class="hljs-number">117</span>;<br>    low[<span class="hljs-string">&quot;oct&quot;</span>] = <span class="hljs-number">10</span>;<br>    low[<span class="hljs-string">&quot;lok&quot;</span>] = <span class="hljs-number">130</span>;<br>    low[<span class="hljs-string">&quot;nov&quot;</span>] = <span class="hljs-number">11</span>;<br>    low[<span class="hljs-string">&quot;mer&quot;</span>] = <span class="hljs-number">143</span>;<br>    low[<span class="hljs-string">&quot;dec&quot;</span>] = <span class="hljs-number">12</span>;<br>    low[<span class="hljs-string">&quot;jou&quot;</span>] = <span class="hljs-number">156</span>;<br>    hlow[<span class="hljs-number">0</span>] = <span class="hljs-string">&quot;tret&quot;</span>;<br>    hlow[<span class="hljs-number">1</span>] = <span class="hljs-string">&quot;jan&quot;</span>;<br>    hhigh[<span class="hljs-number">1</span>] = <span class="hljs-string">&quot;tam&quot;</span>;<br>    hlow[<span class="hljs-number">2</span>] = <span class="hljs-string">&quot;feb&quot;</span>;<br>    hhigh[<span class="hljs-number">2</span>] = <span class="hljs-string">&quot;hel&quot;</span>;<br>    hlow[<span class="hljs-number">3</span>] = <span class="hljs-string">&quot;mar&quot;</span>;<br>    hhigh[<span class="hljs-number">3</span>] = <span class="hljs-string">&quot;maa&quot;</span>;<br>    hlow[<span class="hljs-number">4</span>] = <span class="hljs-string">&quot;apr&quot;</span>;<br>    hhigh[<span class="hljs-number">4</span>] = <span class="hljs-string">&quot;huh&quot;</span>;<br>    hlow[<span class="hljs-number">5</span>] = <span class="hljs-string">&quot;may&quot;</span>;<br>    hhigh[<span class="hljs-number">5</span>] = <span class="hljs-string">&quot;tou&quot;</span>;<br>    hlow[<span class="hljs-number">6</span>] = <span class="hljs-string">&quot;jun&quot;</span>;<br>    hhigh[<span class="hljs-number">6</span>] = <span class="hljs-string">&quot;kes&quot;</span>;<br>    hlow[<span class="hljs-number">7</span>] = <span class="hljs-string">&quot;jly&quot;</span>;<br>    hhigh[<span class="hljs-number">7</span>] = <span class="hljs-string">&quot;hei&quot;</span>;<br>    hlow[<span class="hljs-number">8</span>] = <span class="hljs-string">&quot;aug&quot;</span>;<br>    hhigh[<span class="hljs-number">8</span>] = <span class="hljs-string">&quot;elo&quot;</span>;<br>    hlow[<span class="hljs-number">9</span>] = <span class="hljs-string">&quot;sep&quot;</span>;<br>    hhigh[<span class="hljs-number">9</span>] = <span class="hljs-string">&quot;syy&quot;</span>;<br>    hlow[<span class="hljs-number">10</span>] = <span class="hljs-string">&quot;oct&quot;</span>;<br>    hhigh[<span class="hljs-number">10</span>] = <span class="hljs-string">&quot;lok&quot;</span>;<br>    hlow[<span class="hljs-number">11</span>] = <span class="hljs-string">&quot;nov&quot;</span>;<br>    hhigh[<span class="hljs-number">11</span>] = <span class="hljs-string">&quot;mer&quot;</span>;<br>    hlow[<span class="hljs-number">12</span>] = <span class="hljs-string">&quot;dec&quot;</span>;<br>    hhigh[<span class="hljs-number">12</span>] = <span class="hljs-string">&quot;jou&quot;</span>;<br><br>    <span class="hljs-type">int</span> n;<br>    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;n);<br>    <span class="hljs-built_in">getchar</span>();<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) &#123;<br>        <span class="hljs-type">char</span> ch;<br>        <span class="hljs-type">char</span> s1[<span class="hljs-number">4</span>] = &#123;<span class="hljs-number">0</span>&#125;, s2[<span class="hljs-number">4</span>] = &#123;<span class="hljs-number">0</span>&#125;;<br>        <span class="hljs-type">int</span> ii = <span class="hljs-number">0</span>;<br>        <span class="hljs-type">char</span> *s = s1;<br>        <span class="hljs-keyword">while</span>((ch = <span class="hljs-built_in">getchar</span>()) != <span class="hljs-string">&#x27;\n&#x27;</span>) &#123;<br>            <span class="hljs-keyword">if</span>(ch != <span class="hljs-string">&#x27; &#x27;</span>) s[ii++] = ch;<br>            <span class="hljs-keyword">else</span> &#123;<br>                s = s2;<br>                ii = <span class="hljs-number">0</span>;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-keyword">if</span>(s1[<span class="hljs-number">0</span>] &gt;= <span class="hljs-string">&#x27;0&#x27;</span> &amp;&amp; s1[<span class="hljs-number">0</span>] &lt;= <span class="hljs-string">&#x27;9&#x27;</span>) &#123;<br><br>            <span class="hljs-type">int</span> ans = <span class="hljs-built_in">charToInt</span>(s1);<br>            <span class="hljs-type">int</span> t1 = ans % <span class="hljs-number">13</span>;<br>            ans -= t1;<br>            <span class="hljs-keyword">if</span>(ans == <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>, hlow[t1]);<br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(t1 == <span class="hljs-number">0</span>) &#123;<br>                ans /= <span class="hljs-number">13</span>;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>, hhigh[ans]);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                ans /= <span class="hljs-number">13</span>;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s %s\n&quot;</span>, hhigh[ans], hlow[t1]);<br><br>            &#125;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">strlen</span>(s2) == <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-type">const</span> <span class="hljs-type">char</span> *ss1 = s1;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, low[ss1]);<br><br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-type">const</span> <span class="hljs-type">char</span> *ss1 = s1;<br>                <span class="hljs-type">const</span> <span class="hljs-type">char</span> *ss2 = s2;<br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, low[ss2] + low[ss1]);<br><br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%A2%98%E8%A7%A3/">题解</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/18/%E8%B4%AA%E5%BF%83-%E5%8C%BA%E9%97%B4%E8%B0%83%E5%BA%A6%E9%97%AE%E9%A2%98/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">贪心-区间调度问题</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/12/21/2019-12-21-%E9%A2%98%E8%A7%A3/">
+                        <span class="hidden-mobile">2019/12/21 题解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
